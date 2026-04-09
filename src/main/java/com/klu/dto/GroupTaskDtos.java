@@ -20,8 +20,8 @@ public final class GroupTaskDtos {
         private Long groupId;
         private String title;
         private Long assignedToId;
-        private String assignedToName; // Added value for frontend
-        private TaskStatus status;
+        private String assignedToName;
+        private String status;
         private Long createdBy;
     }
 }

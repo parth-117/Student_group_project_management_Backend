@@ -17,15 +17,13 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String subject;
     private String title;
     private String description;
-
     private String section;
-    private String subject;
-    private LocalDate deadline;
     private Integer groupSize;
-    private String status; // Active / Archived etc.
-
     private String createdBy;
+    private String status;
+    private LocalDate deadline;
     private LocalDate createdAt;
 }

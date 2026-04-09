@@ -34,7 +34,15 @@ public class GroupTaskService {
     private GroupTaskDtos.RespDto mapToDto(GroupTask task) {
         GroupTaskDtos.RespDto dto = modelMapper.map(task, GroupTaskDtos.RespDto.class);
         if (task.getAssignedTo() != null) {
+            dto.setAssignedToId(task.getAssignedTo().getId());
             dto.setAssignedToName(task.getAssignedTo().getName());
+        }
+        if (task.getStatus() != null) {
+            String s = task.getStatus().name();
+            if (s.equals("IN_PROGRESS")) dto.setStatus("In Progress");
+            else if (s.equals("PENDING")) dto.setStatus("Pending");
+            else if (s.equals("COMPLETED")) dto.setStatus("Completed");
+            else dto.setStatus("Pending");
         }
         return dto;
     }
@@ -72,9 +80,11 @@ public class GroupTaskService {
         GroupTask task = repo.findById(taskId).orElseThrow(() -> new IllegalArgumentException("Task not found"));
         
         try {
-            task.setStatus(TaskStatus.valueOf(status.toUpperCase()));
+            String enumStr = status.trim().toUpperCase().replace(" ", "_");
+            task.setStatus(TaskStatus.valueOf(enumStr));
         } catch (IllegalArgumentException e) {
             // fallback if string is invalid
+            throw new IllegalArgumentException("Invalid task status: " + status);
         }
         
         return mapToDto(repo.save(task));
